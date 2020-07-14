@@ -1,0 +1,51 @@
+version: "2.1"
+services:
+  plex:
+    image: linuxserver/plex
+    container_name: plex
+    network_mode: host
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - VERSION=docker
+      - UMASK_SET=022
+    volumes:
+      - plex-config:/config
+      - ~/Videos/Movies:/movies
+      - ~/Videos/Series:/tv
+    restart: unless-stopped
+  radarr:
+    image: linuxserver/radarr
+    container_name: radarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+      - UMASK_SET=022
+    volumes:
+      - radarr-config:/config
+      - ~/Videos/Movies:/movies
+      - ~/Videos/Series:/tv
+    ports:
+      - 7878:7878
+    restart: unless-stopped
+  bazarr:
+    image: linuxserver/bazarr
+    container_name: bazarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+      - UMASK_SET=022
+    volumes:
+      - bazarr-config:/config
+      - ~/Downloads:/downloads
+      - ~/Videos/Movies:/movies
+      - ~/Videos/Series:/tv
+    ports:
+      - 6767:6767
+    restart: unless-stopped
+volumes:
+  plex-config:
+  radarr-config:
+  bazarr-config:
